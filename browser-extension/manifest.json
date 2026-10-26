@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "ALT Channel Points Monitor",
+  "version": "0.1.0",
+  "description": "Reads the visible Twitch Channel Points balance for the active account profile.",
+  "permissions": ["storage"],
+  "host_permissions": ["http://localhost:47831/*"],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.twitch.tv/*", "https://twitch.tv/*"],
+      "js": ["content-script.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

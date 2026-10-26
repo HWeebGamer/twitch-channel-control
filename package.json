@@ -1,0 +1,64 @@
+{
+  "name": "twitch-channel-control",
+  "version": "0.1.3",
+  "description": "Six-slot Twitch account control panel",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.twitch.channelcontrol",
+    "productName": "Twitch Channel Control",
+    "asar": true,
+    "files": [
+      "index.html",
+      "styles.css",
+      "app.js",
+      "main.js",
+      "preload.js",
+      "arcade.html",
+      "arcade.js",
+      "package.json",
+      "assets/alt-icon.ico"
+    ],
+    "extraResources": [
+      {
+        "from": "browser-extension",
+        "to": "browser-extension"
+      }
+    ],
+    "win": {
+      "icon": "assets/alt-icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "runAfterFinish": true,
+      "artifactName": "Twitch Channel Control Setup.exe"
+    },
+    "portable": {
+      "artifactName": "Twitch Channel Control Portable.exe"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "HWeebGamer",
+      "repo": "twitch-channel-control",
+      "releaseType": "release"
+    }
+  },
+  "devDependencies": {
+    "electron": "^38.2.0",
+    "electron-builder": "^26.0.12"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.11"
+  }
+}

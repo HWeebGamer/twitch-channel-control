@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect width="256" height="256" rx="48" fill="#09090d"/>
+  <path d="M42 38h172v132l-34 34h-38l-20 24v-24H42z" fill="#9d68ff"/>
+  <path d="M57 53h142v108l-24 24h-47l-19 23v-23H57z" fill="#111117"/>
+  <path d="M79 78h98v63H79z" fill="#9d68ff" opacity=".12"/>
+  <text x="128" y="127" fill="#f4f1fa" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800" text-anchor="middle" letter-spacing="1">ALT</text>
+</svg>

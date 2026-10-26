@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Channel Control</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">TWITCH ACCOUNT CONTROL</p>
+          <h1>Channel Control</h1>
+        </div>
+        <div class="system-state" id="systemState" data-state="ready">
+          <span class="state-dot"></span>
+          <span id="systemStateText">Ready</span>
+        </div>
+      </header>
+
+      <div class="quick-actions">
+        <button class="button secondary" id="betterTtvButton" type="button">Install BetterTTV</button>
+      </div>
+
+      <section class="arcade-feature panel" aria-label="Arcade">
+        <div class="arcade-feature-copy">
+          <p class="eyebrow">PRIVATE ARCADE</p>
+          <h2>Take a break in the Arcade</h2>
+          <p>Play embedded games like Snake, or open the native AnonTW game in its own dedicated window.</p>
+        </div>
+        <div class="arcade-feature-actions">
+          <button class="button primary" id="openArcadeWindowButton" type="button">Open Arcade</button>
+        </div>
+      </section>
+
+      <nav class="section-tabs" aria-label="Application sections">
+        <button class="section-tab active" data-section="statsSection" type="button">Profile Stats</button>
+        <button class="section-tab" data-section="accountsSection" type="button">Accounts</button>
+        <button class="section-tab irc-tab" data-section="ircSection" type="button"><span>IRC Dashboard</span><small>Advanced</small></button>
+        <button class="section-tab" data-section="diagnosticsSection" type="button">Diagnostics</button>
+        <button class="section-tab" data-section="helpSection" type="button">Help</button>
+        <button class="section-tab" data-section="settingsSection" type="button">Settings</button>
+      </nav>
+
+      <section class="app-section active-section" id="statsSection">
+        <section class="summary" aria-label="Account summary">
+          <div class="summary-item">
+            <span class="summary-label">Connected</span>
+            <strong id="connectedCount">0 / 6</strong>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Active channels</span>
+            <strong id="activeCount">0</strong>
+          </div>
+          <div class="summary-item summary-wide">
+            <span class="summary-label">Last action</span>
+            <strong id="lastAction">Waiting for input</strong>
+          </div>
+        </section>
+
+        <section class="stats-panel panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">CHANNEL PROFILES</p>
+              <h2>Joined channel stats</h2>
+            </div>
+            <span class="slot-count">Live connection state</span>
+          </div>
+          <div class="profile-stats-grid" id="profileStatsGrid">
+            <div class="empty-state">Connect an account and join a channel to see its profile stats.</div>
+          </div>
+        </section>
+      </section>
+
+      <section class="app-section" id="accountsSection">
+        <section class="accounts-panel panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">ACCOUNT SLOTS</p>
+              <h2>Connected accounts</h2>
+            </div>
+            <span class="slot-count">6 slots</span>
+          </div>
+          <div class="account-list" id="accountList"></div>
+        </section>
+      </section>
+
+      <section class="app-section irc-feature-section" id="ircSection">
+        <section class="irc-panel panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">ADVANCED CHAT CONTROL</p>
+              <h2>IRC Dashboard</h2>
+            </div>
+            <button class="icon-button" id="clearIrcLog" type="button" title="Clear IRC activity" aria-label="Clear IRC activity">x</button>
+          </div>
+          <div class="irc-toolbar">
+            <label class="irc-account-picker">
+              Send as account
+              <select id="ircAccountSelect"></select>
+            </label>
+            <label class="irc-account-picker">
+              Chat location
+              <select id="ircChannelSelect"></select>
+            </label>
+            <label class="irc-account-picker">
+              Message filter
+              <select id="ircFilterSelect">
+                <option value="all">All visible chat</option>
+                <option value="mentions">Mentions</option>
+                <option value="commands">Bot commands</option>
+                <option value="redemptions">Visible channel redemptions</option>
+                <option value="system">System events</option>
+              </select>
+            </label>
+            <label class="irc-toggle-label" for="ircSlowModeToggle">
+              <span>Slow log</span>
+              <input class="toggle-input" id="ircSlowModeToggle" type="checkbox" checked />
+            </label>
+            <span class="irc-safety-note">Messages from accounts in the same channel appear once. <strong id="ircSlowModeState">Log slow mode ready</strong></span>
+          </div>
+          <form class="irc-message-form" id="ircMessageForm">
+            <input id="ircMessageInput" maxlength="450" autocomplete="off" placeholder="Send one manual chat message" aria-label="IRC message" />
+            <button class="button primary" type="submit">Send message</button>
+          </form>
+          <div class="irc-status-grid" id="ircStatusGrid"></div>
+          <div class="irc-log" id="ircLog" aria-live="polite"></div>
+        </section>
+      </section>
+
+      <section class="app-section" id="diagnosticsSection">
+        <aside class="diagnostics-panel panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">LIVE FEEDBACK</p>
+              <h2>Diagnostics</h2>
+            </div>
+            <button class="icon-button" id="clearLog" type="button" title="Clear diagnostics" aria-label="Clear diagnostics">x</button>
+          </div>
+          <div class="diagnostic-list" id="diagnosticList" aria-live="polite"></div>
+        </aside>
+      </section>
+
+      <section class="app-section" id="helpSection">
+        <section class="help-panel panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">GUIDE</p>
+              <h2>How Channel Control works</h2>
+            </div>
+            <button class="button secondary" id="detailedGuideButton" type="button">Detailed setup guide</button>
+          </div>
+          <div class="help-grid">
+            <article class="help-group">
+              <p class="eyebrow">01 · GET STARTED</p>
+              <h3>Connect and authorize</h3>
+              <p>Use a slot's Connect button to name the Twitch account and create its isolated Chrome profile. Use Authorize to sign in through Twitch and save the chat permissions securely on this computer.</p>
+              <p>Repeat those steps for each account slot you want to use.</p>
+            </article>
+            <article class="help-group">
+              <p class="eyebrow">02 · CHANNEL SESSIONS</p>
+              <h3>Join and leave channels</h3>
+              <p>Join asks for a channel name, connects the account to Twitch chat, and opens that channel in the matching Chrome profile. Part leaves the IRC chat connection. Open opens the saved channel again without changing the connection.</p>
+            </article>
+            <article class="help-group">
+              <p class="eyebrow">03 · PROFILE STATS</p>
+              <h3>Monitor channel points</h3>
+              <p>Profile Stats shows each connected account's channel, authorization state, and monitor status. Set up monitor opens the account profile and provides the unpacked extension folder. After the extension is loaded in Chrome, reload Twitch to send visible points updates to this app.</p>
+              <p>The monitor reads what Twitch displays in the browser. It does not collect or redeem points.</p>
+            </article>
+            <article class="help-group">
+              <p class="eyebrow">04 · BUTTONS</p>
+              <h3>Quick reference</h3>
+              <dl class="help-list">
+                <div><dt>Connect</dt><dd>Create or update an account slot.</dd></div>
+                <div><dt>Disconnect</dt><dd>Clear the slot from the control panel.</dd></div>
+                <div><dt>Authorize</dt><dd>Open Twitch OAuth for that profile.</dd></div>
+                <div><dt>BetterTTV</dt><dd>Open BetterTTV for the selected profile.</dd></div>
+                <div><dt>Install BetterTTV</dt><dd>Open the extension page in the default browser.</dd></div>
+                <div><dt>Clear diagnostics</dt><dd>Remove the current diagnostic history.</dd></div>
+              </dl>
+            </article>
+            <article class="help-group">
+              <p class="eyebrow">05 · SETTINGS</p>
+              <h3>App behavior</h3>
+              <p>Minimize to Windows tray keeps the app running when its window is closed. Use the tray menu to reopen the app or quit it completely.</p>
+              <p>Account names, channels, and settings are cached locally. OAuth tokens are stored using Windows secure storage.</p>
+            </article>
+            <article class="help-group">
+              <p class="eyebrow">06 · STATUS</p>
+              <h3>Reading the interface</h3>
+              <p>Connected means the slot is configured. In channel means its IRC session is active. IRC Dashboard contains chat activity, connection states, and controlled manual messages. Diagnostics reports general app errors and clears itself hourly.</p>
+            </article>
+            <article class="help-group">
+              <p class="eyebrow">07 · IRC DASHBOARD</p>
+              <h3>Advanced chat workspace</h3>
+              <p>IRC Dashboard is an optional advanced section for accounts currently joined to Twitch chat. Each joined account gets a status card, while accounts watching the same channel share one chat location and duplicate messages are removed.</p>
+              <p>Use Send as account to choose one account for a manual message. Use Chat location to focus one channel. Message filter can show all visible chat, mentions, bot commands, visible redemption-related events, or system events such as PART and NOTICE.</p>
+              <p>Slow log is enabled by default. During a message burst it shows one warning and suppresses repeated feed entries until chat quiets down. It does not change Twitch slow mode or stop IRC receiving messages.</p>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <section class="app-section" id="settingsSection">
+        <section class="settings-panel panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">APP BEHAVIOR</p>
+              <h2>Settings</h2>
+            </div>
+          </div>
+          <div class="settings-list">
+            <div class="setting-row update-setting">
+              <div>
+                <strong>Application updates</strong>
+                <small id="updateStatus">Check GitHub for the latest shareable release.</small>
+              </div>
+              <div class="update-actions">
+                <button class="button secondary" id="checkForUpdates" type="button">Check for updates</button>
+                <button class="button primary" id="downloadUpdate" type="button" hidden>Download update</button>
+                <button class="button primary" id="installUpdate" type="button" hidden>Restart and install</button>
+              </div>
+            </div>
+            <div class="setting-row">
+              <span>
+                <strong>Emergency backup</strong>
+                <small>Save the current executable and local account/settings cache into a dated backup folder.</small>
+              </span>
+              <button class="button secondary" id="backupButton" type="button">Back up now</button>
+            </div>
+            <div class="setting-row">
+              <span>
+                <strong>Restore backup</strong>
+                <small>Restore the newest app-created backup or choose a backup folder manually.</small>
+              </span>
+              <button class="button danger" id="restoreBackupButton" type="button">Restore backup</button>
+            </div>
+            <label class="setting-row" for="trayToggle">
+              <span>
+                <strong>Minimize to Windows tray</strong>
+                <small>Closing the window hides the app in the tray while Twitch sessions keep running.</small>
+              </span>
+              <input class="toggle-input" id="trayToggle" type="checkbox" />
+            </label>
+            <label class="setting-row" for="hardwareAccelerationToggle">
+              <span>
+                <strong>Hardware acceleration</strong>
+                <small>Use the GPU for rendering when available. Restart the app after changing this option.</small>
+              </span>
+              <input class="toggle-input" id="hardwareAccelerationToggle" type="checkbox" checked />
+            </label>
+          </div>
+        </section>
+      </section>
+
+      <footer class="footer-note">
+        <span class="footer-status-dot"></span>
+        Local control panel ready
+      </footer>
+    </main>
+
+    <dialog id="connectDialog">
+      <form method="dialog" id="connectForm">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">ACCOUNT CONNECTION</p>
+            <h2 id="dialogTitle">Connect account</h2>
+          </div>
+          <button class="icon-button" value="cancel" type="submit" title="Close" aria-label="Close">x</button>
+        </div>
+        <label>
+          Twitch account name
+          <input id="accountName" name="accountName" autocomplete="off" placeholder="Enter account name" required />
+        </label>
+        <label>
+          Browser profile
+          <input id="browserProfile" name="browserProfile" autocomplete="off" placeholder="Profile 1" />
+        </label>
+        <p class="dialog-hint">OAuth and browser-session wiring can be attached to this slot when the Twitch app credentials are configured.</p>
+        <div class="dialog-actions">
+          <button class="button secondary" value="cancel" type="submit">Cancel</button>
+          <button class="button primary" id="confirmConnect" value="default" type="submit">Connect</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="channelDialog">
+      <form method="dialog" id="channelForm">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">CHANNEL SESSION</p>
+            <h2 id="channelDialogTitle">Join channel</h2>
+          </div>
+          <button class="icon-button" value="cancel" type="submit" title="Close" aria-label="Close">x</button>
+        </div>
+        <label>
+          Twitch channel name
+          <input id="channelName" name="channelName" autocomplete="off" placeholder="channel_name" required />
+        </label>
+        <p class="dialog-hint">The channel will open in this account's isolated Chrome profile.</p>
+        <div class="dialog-actions">
+          <button class="button secondary" value="cancel" type="submit">Cancel</button>
+          <button class="button primary" id="confirmJoin" value="default" type="submit">Join channel</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="authDialog">
+      <form method="dialog" id="authForm">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">TWITCH AUTHORIZATION</p>
+            <h2 id="authDialogTitle">Authorize account</h2>
+          </div>
+          <button class="icon-button" value="cancel" type="submit" title="Close" aria-label="Close">x</button>
+        </div>
+        <label>
+          Twitch Client ID
+          <input id="clientId" name="clientId" autocomplete="off" placeholder="Paste your Client ID" required />
+        </label>
+        <label>
+          Redirect URL
+          <input id="redirectUri" name="redirectUri" value="http://localhost:47831/oauth/callback" required />
+        </label>
+        <p class="dialog-hint">Register this exact redirect URL in your Twitch Developer App. The link requests chat:read and chat:edit for this account.</p>
+        <div class="dialog-actions">
+          <button class="button secondary" value="cancel" type="submit">Cancel</button>
+          <button class="button primary" id="confirmAuth" value="default" type="submit">Open authorization</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="guideDialog" class="guide-dialog">
+      <form method="dialog">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">STEP-BY-STEP</p>
+            <h2>Detailed setup guide</h2>
+          </div>
+          <button class="icon-button" value="cancel" type="submit" title="Close" aria-label="Close">x</button>
+        </div>
+        <div class="guide-content">
+          <section>
+            <h3>1. Connect an account</h3>
+            <p>Open Accounts, choose a slot, and press Connect. Enter the Twitch username and accept the suggested browser profile name. A separate Chrome profile is created for that slot.</p>
+          </section>
+          <section>
+            <h3>2. Authorize the account</h3>
+            <p>Press Authorize on the same slot, enter the Twitch Client ID, and open the authorization page. Sign in as the matching Twitch account. The token is stored securely on this computer after Twitch redirects back.</p>
+          </section>
+          <section>
+            <h3>3. Join a channel</h3>
+            <p>Return to Accounts and press Join. Enter the channel name without the URL. Join creates the IRC chat connection and opens the channel in that slot's isolated Chrome profile. Part ends the chat connection.</p>
+          </section>
+          <section class="guide-highlight">
+            <h3>4. Install the Channel Points monitor for each profile</h3>
+            <p>The extension must be loaded separately in every Chrome profile because Chrome stores extensions per profile.</p>
+            <ol>
+              <li>Open Profile Stats and press Set up monitor on the account you want to configure.</li>
+              <li>Let the account's isolated Chrome profile open. The app also opens the browser-extension folder in File Explorer.</li>
+              <li>In that same Chrome profile, open <code>chrome://extensions</code>.</li>
+              <li>Turn on Developer mode.</li>
+              <li>Press Load unpacked and select the browser-extension folder shown by the app.</li>
+              <li>Return to the Twitch tab opened for that account and reload it.</li>
+              <li>Keep that Twitch tab open. The monitor checks the visible Channel Points value about every five seconds.</li>
+            </ol>
+            <p>Repeat these steps for each account slot. Do not select the extension folder from another profile or another program version.</p>
+          </section>
+          <section>
+            <h3>5. Read Profile Stats</h3>
+            <p>Profile Stats shows the account, browser profile, joined channel, authorization state, and monitor state. Waiting for monitor means no update has arrived. Updated means the extension has sent a reading. A points value may be unavailable when Twitch is not displaying it.</p>
+          </section>
+          <section>
+            <h3>6. Use Diagnostics and Settings</h3>
+            <p>Diagnostics lists errors and connection events. Clear diagnostics removes the visible log. Settings controls whether the app minimizes to the Windows tray. Use the tray menu to reopen or fully quit the app.</p>
+          </section>
+          <section class="guide-highlight">
+            <h3>7. Use the IRC Dashboard</h3>
+            <p>IRC Dashboard is the advanced chat workspace. Join a channel from Accounts first, then open IRC Dashboard to see the account's IRC status and chat activity.</p>
+            <ol>
+              <li>Use <strong>Send as account</strong> to choose which joined account sends a manual message.</li>
+              <li>Use <strong>Chat location</strong> to view one channel at a time. Multiple accounts in the same channel share that one feed.</li>
+              <li>Use <strong>Message filter</strong> to show all visible chat, mentions, bot commands, visible redemption-related events, or IRC system events.</li>
+              <li>Leave <strong>Slow log</strong> enabled for busy channels. It collapses sustained bursts into one warning and resumes after the chat quiets down.</li>
+              <li>Use the x button to clear only the IRC activity feed. It does not part accounts or change Twitch connections.</li>
+            </ol>
+            <p>Manual messages are limited to one selected account and are rate-limited. The dashboard does not broadcast a message across account slots.</p>
+          </section>
+          <section>
+            <h3>Extension troubleshooting</h3>
+            <p>If the card remains waiting, confirm the extension appears as enabled in chrome://extensions, reload the Twitch tab, make sure the tab belongs to the correct account profile, and check that the control app is running. If Twitch shows no points value, the monitor cannot report one.</p>
+          </section>
+        </div>
+        <div class="dialog-actions">
+          <button class="button primary" value="cancel" type="submit">Close guide</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
