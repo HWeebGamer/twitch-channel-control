@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld("desktopBridge", {
   openArcadeWindow: () => ipcRenderer.invoke("open-arcade-window"),
   launchArcadeGame: (folder) => ipcRenderer.invoke("launch-arcade-game", folder),
   checkForUpdates: () => ipcRenderer.invoke("check-for-updates"),
+  getAppVersion: () => ipcRenderer.invoke("get-app-version"),
   downloadUpdate: () => ipcRenderer.invoke("download-update"),
   installUpdate: () => ipcRenderer.invoke("install-update"),
   onUpdateStatus: (callback) => ipcRenderer.on("update-status", (_event, data) => callback(data)),

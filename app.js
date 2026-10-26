@@ -945,6 +945,7 @@ window.setInterval(clearDiagnostics, 60 * 60 * 1000);
 renderIrcDashboard();
 if (window.desktopBridge?.setTrayMode) window.desktopBridge.setTrayMode(appSettings.trayMode);
 setTimeout(() => checkForUpdates(false), 2500);
+window.desktopBridge?.getAppVersion?.().then((version) => { if (!updateStatus.textContent.includes("available") && !updateStatus.textContent.includes("latest")) updateStatus.textContent = `Installed version: ${version}. Checking for updates...`; });
 if (accounts.some((account) => account.status === "connected")) {
   const restored = accounts.filter((account) => account.status === "connected").length;
   setLastAction(`${restored} cached account${restored === 1 ? "" : "s"} restored`);

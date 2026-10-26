@@ -645,6 +645,7 @@ ipcMain.handle("check-for-updates", async () => {
     return { ok: false, error: error.message };
   }
 });
+ipcMain.handle("get-app-version", () => app.getVersion());
 
 ipcMain.handle("download-update", async () => {
   if (!updaterReady) return { ok: false, error: "In-app updates are available only in the installed version." };
@@ -705,7 +706,6 @@ ipcMain.handle("irc-send-message", (_event, { accountId, message }) => {
 app.whenReady().then(() => {
   configureAutoUpdater();
   createWindow();
-  if (updaterReady) setTimeout(() => autoUpdater.checkForUpdates().catch(() => {}), 3500);
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
